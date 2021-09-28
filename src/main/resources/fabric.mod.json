@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "exdel",
+  "version": "${version}",
+
+  "name": "Explorer's Delight",
+  "description": "A set of delightfully nifty tools for exploration",
+  "authors": [
+    "falseresync"
+  ],
+  "contact": {
+    "homepage": "https://falseresync.ru",
+    "sources": "https://github.com/falseresync/explorers-delight"
+  },
+
+  "license": "MIT",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.falseresync.exdel.ExplorersDelight"
+    ]
+  },
+  "mixins": [
+    "exdel.mixins.json"
+  ],
+  "accessWidener" : "exdel.accesswidener",
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  }
+}
