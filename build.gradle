@@ -23,6 +23,23 @@ repositories {
 		name = "Ladysnake Libs"
 		url = "https://ladysnake.jfrog.io/artifactory/mods"
 	}
+	// All of these are for Flan :P
+	maven {
+		name = "Flemmli97"
+		url "https://gitlab.com/api/v4/projects/21830712/packages/maven"
+	}
+	maven {
+		name = "Gunpowder"
+		url = "https://maven.martmists.com/releases"
+	}
+	maven {
+		name = "HavenKing"
+		url = "https://hephaestus.dev/release"
+	}
+	maven {
+		name = "Permissions"
+		url = "https://maven.nucleoid.xyz"
+	}
 }
 
 dependencies {
@@ -31,6 +48,9 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modApi "dev.emi:trinkets:${project.trinkets_version}"
+	modApi ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
+		transitive = false
+	}
 }
 
 processResources {
