@@ -14,11 +14,15 @@
   },
 
   "license": "MIT",
+  "icon": "assets/exdel/textures/item/recall_potion.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
       "ru.falseresync.exdel.ExplorersDelight"
+    ],
+    "client": [
+      "ru.falseresync.exdel.ExplorersDelightClient"
     ]
   },
   "mixins": [

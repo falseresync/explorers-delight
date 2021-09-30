@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:glow_ink_sac"
+      },
+      {
+        "item": "minecraft:blaze_powder"
+      }
+    ],
+    {
+      "item": "minecraft:slime_ball"
+    },
+    {
+      "item": "minecraft:feather"
+    }
+  ],
+  "result": {
+    "item": "exdel:luminous_orb",
+    "count": 32
+  }
+}
