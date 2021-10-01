@@ -12,8 +12,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import ru.falseresync.exdel.api.CompatManager;
 import ru.falseresync.exdel.block.LuminousOrbBlock;
-import ru.falseresync.exdel.compat.FlanCompat;
 import ru.falseresync.exdel.item.IlluminationNecklaceItem;
 import ru.falseresync.exdel.item.RecallPotionItem;
 import ru.falseresync.exdel.mixin.BrewingRecipeRegistryAccessor;
@@ -26,7 +26,7 @@ public class ExplorersDelight implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        FlanCompat.init();
+        CompatManager.init();
 
         LUMINOUS_ORB = Registry.register(Registry.BLOCK, new Identifier("exdel:luminous_orb"), new LuminousOrbBlock(FabricBlockSettings.of(Material.FIRE).collidable(false).luminance(15)));
 

@@ -47,8 +47,11 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modApi "dev.emi:trinkets:${project.trinkets_version}"
-	modApi ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
+	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+	modCompileOnly ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
+		transitive = false
+	}
+	modRuntime ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
 		transitive = false
 	}
 }

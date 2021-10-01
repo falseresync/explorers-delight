@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.compat.FlanCompat;
+import ru.falseresync.exdel.api.CompatManager;
 
 public class IlluminationNecklaceItem extends TrinketItem {
     public IlluminationNecklaceItem(Settings settings) {
@@ -49,7 +49,7 @@ public class IlluminationNecklaceItem extends TrinketItem {
                 if (!orbs.isEmpty() && orbs.getItem() instanceof BlockItem orbBlockItem) {
                     var world = player.getServerWorld();
                     var pos = player.getBlockPos();
-                    if (world.getLightLevel(pos) < 8 && player.canPlaceOn(pos, player.getMovementDirection(), orbs) && FlanCompat.canPlaceBlock(world, pos, player)) {
+                    if (world.getLightLevel(pos) < 8 && player.canPlaceOn(pos, player.getMovementDirection(), orbs) && CompatManager.getInteractionDriver().canPlace(world, pos, player)) {
                         world.setBlockState(pos, orbBlockItem.getBlock().getDefaultState());
                         if (!player.getAbilities().creativeMode) {
                             stack.damage(1, player, ignored -> {});
