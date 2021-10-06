@@ -7,12 +7,13 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.render.RenderLayer;
+import ru.falseresync.exdel.item.AssortmentPouchItem;
 
 @Environment(EnvType.CLIENT)
 public class ExplorersDelightClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(ExplorersDelight.LUMINOUS_ORB, RenderLayer.getCutout());
-//        ScreenRegistry.register(ExplorersDelight.ASSORTMENT_SCREEN_HANDLER, GenericContainerScreen::new);
+        ScreenRegistry.register(ExplorersDelight.ASSORTMENT_SCREEN_HANDLER, AssortmentPouchItem.AssortmentScreen::new);
     }
 }

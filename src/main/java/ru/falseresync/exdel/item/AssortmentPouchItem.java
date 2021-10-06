@@ -1,17 +1,23 @@
 package ru.falseresync.exdel.item;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -20,8 +26,7 @@ import ru.falseresync.exdel.ExplorersDelight;
 import java.util.Set;
 
 public class AssortmentPouchItem extends Item {
-    public static final int INV_ROWS = 5;
-    public static final int INV_SIZE = 9*INV_ROWS;
+    public static final int INV_SIZE = 45;
 
     public AssortmentPouchItem(Settings settings) {
         super(settings);
@@ -44,45 +49,93 @@ public class AssortmentPouchItem extends Item {
 
         @Override
         public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-            return new AssortmentScreenHandler(syncId, playerInventory, inventory, INV_ROWS);
+            return new AssortmentScreenHandler(syncId, playerInventory, inventory);
         }
     }
 
     public static class AssortmentScreenHandler extends ScreenHandler {
+        private final Inventory inventory;
+
         public AssortmentScreenHandler(int syncId, PlayerInventory playerInventory) {
-            this(syncId, playerInventory, new AssortmentInventory(INV_SIZE, ItemStack.EMPTY.copy()), INV_ROWS);
+            this(syncId, playerInventory, new AssortmentInventory(INV_SIZE, ItemStack.EMPTY.copy()));
         }
 
-        public AssortmentScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, int rows) {
+        public AssortmentScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
             super(ExplorersDelight.ASSORTMENT_SCREEN_HANDLER, syncId);
-            checkSize(inventory, rows * 9);
-//            this.inventory = inventory;
-//            this.rows = rows;
-//            inventory.onOpen(playerInventory.player);
-//            int i = (this.rows - 4) * 18;
-//
-//            int n;
-//            int m;
-//            for(n = 0; n < this.rows; ++n) {
-//                for(m = 0; m < 9; ++m) {
-//                    this.addSlot(new Slot(inventory, m + n * 9, 8 + m * 18, 18 + n * 18));
-//                }
-//            }
-//
-//            for(n = 0; n < 3; ++n) {
-//                for(m = 0; m < 9; ++m) {
-//                    this.addSlot(new Slot(playerInventory, m + n * 9 + 9, 8 + m * 18, 103 + n * 18 + i));
-//                }
-//            }
-//
-//            for(n = 0; n < 9; ++n) {
-//                this.addSlot(new Slot(playerInventory, n, 8 + n * 18, 161 + i));
-//            }
+            checkSize(inventory, INV_SIZE);
+            this.inventory = inventory;
+            inventory.onOpen(playerInventory.player);
+
+            int i = 18;
+
+            int n;
+            int m;
+            for (n = 0; n < 5; ++n) {
+                for (m = 0; m < 9; ++m) {
+                    addSlot(new AssortmentSlot(inventory, m + n * 9, 8 + m * 18, 18 + n * 18));
+                }
+            }
+
+            for (n = 0; n < 3; ++n) {
+                for (m = 0; m < 9; ++m) {
+                    addSlot(new AssortmentSlot(playerInventory, m + n * 9 + 9, 8 + m * 18, 103 + n * 18 + i));
+                }
+            }
+
+            for (n = 0; n < 9; ++n) {
+                addSlot(new AssortmentSlot(playerInventory, n, 8 + n * 18, 161 + i));
+            }
         }
 
         @Override
         public boolean canUse(PlayerEntity player) {
             return true;
+        }
+
+        @Override
+        public void close(PlayerEntity player) {
+            super.close(player);
+            this.inventory.onClose(player);
+        }
+    }
+
+    public static class AssortmentSlot extends Slot {
+        public AssortmentSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            return inventory.isValid(getIndex(), stack);
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static class AssortmentScreen extends HandledScreen<AssortmentScreenHandler> {
+        private static final Identifier TEXTURE = new Identifier("textures/gui/container/generic_54.png");
+
+        public AssortmentScreen(AssortmentScreenHandler handler, PlayerInventory inventory, Text title) {
+            super(handler, inventory, title);
+            passEvents = false;
+            backgroundHeight = 114 + 5 * 18;
+            playerInventoryTitleY = backgroundHeight - 94;
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            super.render(matrices, mouseX, mouseY, delta);
+            drawMouseoverTooltip(matrices, mouseX, mouseY);
+        }
+
+        @Override
+        protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderTexture(0, TEXTURE);
+            int i = (width - backgroundWidth) / 2;
+            int j = (height - backgroundHeight) / 2;
+            drawTexture(matrices, i, j, 0, 0, backgroundWidth, 5 * 18 + 17);
+            drawTexture(matrices, i, j + 5 * 18 + 17, 0, 126, backgroundWidth, 96);
         }
     }
 

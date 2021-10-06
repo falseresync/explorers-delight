@@ -33,7 +33,7 @@ public class ExplorersDelight implements ModInitializer {
     public void onInitialize() {
         CompatManager.init();
 
-        LUMINOUS_ORB = Registry.register(Registry.BLOCK, new Identifier("exdel:luminous_orb"), new LuminousOrbBlock(FabricBlockSettings.of(Material.FIRE).collidable(false).luminance(15)));
+        LUMINOUS_ORB = Registry.register(Registry.BLOCK, new Identifier("exdel:luminous_orb"), new LuminousOrbBlock(FabricBlockSettings.of(Material.FIRE).collidable(false).luminance(15).breakByHand(true).hardness(0.25F)));
 
         Registry.register(Registry.ITEM, new Identifier("exdel:luminous_orb"), new BlockItem(LUMINOUS_ORB, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
         ILLUMINATION_NECKLACE = Registry.register(Registry.ITEM, new Identifier("exdel:illumination_necklace"),

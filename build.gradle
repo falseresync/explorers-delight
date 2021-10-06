@@ -64,7 +64,9 @@ dependencies {
 
 	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
 	include "dev.emi:trinkets:${project.trinkets_version}"
-	modImplementation "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
+
+	modCompileOnly "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
+	modRuntime "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
 
 	modCompileOnly ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
 		transitive = false
