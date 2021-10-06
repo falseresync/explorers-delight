@@ -23,6 +23,13 @@ repositories {
 		name = "Ladysnake Libs"
 		url = "https://ladysnake.jfrog.io/artifactory/mods"
 	}
+	maven {
+		name 'Gegy'
+		url 'https://maven.gegy.dev'
+	}
+	maven {
+		url 'https://jitpack.io'
+	}
 	// All of these are for Flan :P
 	maven {
 		name = "Flemmli97"
@@ -40,6 +47,13 @@ repositories {
 		name = "Permissions"
 		url = "https://maven.nucleoid.xyz"
 	}
+	// For GOML
+	maven {
+		url = "https://maven.jamieswhiteshirt.com/libs-release/"
+		content {
+			includeGroup 'com.jamieswhiteshirt'
+		}
+	}
 }
 
 dependencies {
@@ -47,7 +61,11 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
 	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+	include "dev.emi:trinkets:${project.trinkets_version}"
+	modImplementation "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
+
 	modCompileOnly ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
 		transitive = false
 	}

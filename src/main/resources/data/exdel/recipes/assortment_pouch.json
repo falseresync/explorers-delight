@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SLS",
+    "SDS",
+    "LLL"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:scute"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "exdel:assortment_pouch",
+    "count": 1
+  }
+}
