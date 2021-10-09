@@ -30,6 +30,9 @@ repositories {
 	maven {
 		url 'https://jitpack.io'
 	}
+	maven {
+		url "https://maven.shedaniel.me/"
+	}
 	// All of these are for Flan :P
 	maven {
 		name = "Flemmli97"
@@ -74,6 +77,8 @@ dependencies {
 	modRuntime ("io.github.flemmli97:flan:${project.minecraft_version}-${project.flan_version}") {
 		transitive = false
 	}
+
+	modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }
 
 processResources {

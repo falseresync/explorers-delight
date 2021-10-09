@@ -97,6 +97,74 @@ public class AssortmentPouchItem extends Item {
             super.close(player);
             this.inventory.onClose(player);
         }
+
+        @Override
+        public ItemStack transferSlot(PlayerEntity player, int index) {
+            var stack = ItemStack.EMPTY;
+            var slot = slots.get(index);
+            if (slot.hasStack()) {
+                var stackInSlot = slot.getStack();
+                stack = stackInSlot.copy();
+                if (index < INV_SIZE) {
+                    if (!insertItem(stackInSlot, INV_SIZE, slots.size(), true)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!modifiedInsertItem(stackInSlot, 0, INV_SIZE, false)) {
+                    return ItemStack.EMPTY;
+                }
+
+                if (stackInSlot.isEmpty()) {
+                    slot.setStack(ItemStack.EMPTY);
+                } else {
+                    slot.markDirty();
+                }
+            }
+            return stack;
+        }
+
+        // Vanilla, FUCK YOU for making me do this
+        protected boolean modifiedInsertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
+            if (stack.isStackable()) {
+                var result = false;
+                var index = startIndex;
+                if (fromLast) {
+                    index = endIndex - 1;
+                }
+
+                while(true) {
+                    if (fromLast) {
+                        if (index < startIndex) {
+                            break;
+                        }
+                    } else if (index >= endIndex) {
+                        break;
+                    }
+
+                    var slot = slots.get(index);
+                    if (!slot.hasStack() && slot.canInsert(stack)) {
+                        if (stack.getCount() > slot.getMaxItemCount()) {
+                            slot.setStack(stack.split(slot.getMaxItemCount()));
+                        } else {
+                            slot.setStack(stack.split(stack.getCount()));
+                        }
+
+                        slot.markDirty();
+                        result = true;
+                        break;
+                    }
+
+                    if (fromLast) {
+                        --index;
+                    } else {
+                        ++index;
+                    }
+                }
+
+                return result;
+            }
+
+            return super.insertItem(stack, startIndex, endIndex, fromLast);
+        }
     }
 
     public static class AssortmentSlot extends Slot {
@@ -212,7 +280,7 @@ public class AssortmentPouchItem extends Item {
 
         @Override
         public boolean isValid(int slot, ItemStack stack) {
-            return !stack.isOf(ExplorersDelight.ASSORTMENT_POUCH);
+            return stacks.get(slot).isEmpty() && !stack.isOf(ExplorersDelight.ASSORTMENT_POUCH);
         }
 
         @Override
