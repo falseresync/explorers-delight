@@ -7,17 +7,24 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.block.Block;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.Material;
+import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Position;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import ru.falseresync.exdel.api.CompatManager;
 import ru.falseresync.exdel.block.LuminousOrbBlock;
 import ru.falseresync.exdel.entity.MysteryArrowEntity;
@@ -104,5 +111,15 @@ public class ExplorersDelight implements ModInitializer {
 
         // ScreenHandlers
         ASSORTMENT_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("exdel:assortment_pouch"), AssortmentPouchItem.AssortmentScreenHandler::new);
+
+        // Misc
+        DispenserBlock.registerBehavior(MYSTERY_ARROW, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                var arrowEntity = new MysteryArrowEntity(world, position.getX(), position.getY(), position.getZ());
+                arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+                return arrowEntity;
+            }
+        });
     }
 }
