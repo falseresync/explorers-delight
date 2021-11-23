@@ -1,7 +1,10 @@
 package ru.falseresync.exdel;
 
+import draylar.omegaconfig.OmegaConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
+import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -13,10 +16,13 @@ import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.provider.number.BinomialLootNumberProvider;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.LootNumberProviderTypes;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.ScreenHandlerType;
@@ -34,7 +40,11 @@ import ru.falseresync.exdel.item.MysteryArrowItem;
 import ru.falseresync.exdel.item.RecallPotionItem;
 import ru.falseresync.exdel.mixin.BrewingRecipeRegistryAccessor;
 
+import java.util.List;
+
 public class ExplorersDelight implements ModInitializer {
+    public static final ExplorersDelightConfig CONFIG;
+    private static final List<Identifier> NPCS_ALIKE_LOOT_TABLES;
     public static Block LUMINOUS_ORB;
     public static Item ILLUMINATION_NECKLACE;
     public static Item RECALL_POTION;
@@ -45,12 +55,28 @@ public class ExplorersDelight implements ModInitializer {
     public static Tag<Item> LUMINOUS_ORBS;
     public static Tag<Block> MYSTERY_ARROW_TRANSFORMABLE_BLOCKS;
     public static Tag<Block> MYSTERY_ARROW_RESULT_BLOCKS;
+    public static Tag<EntityType<?>> MYSTERY_ARROW_AGEABLE_ENTITIES;
     public static ScreenHandlerType<AssortmentPouchItem.AssortmentScreenHandler> ASSORTMENT_SCREEN_HANDLER;
+
+    static {
+        CONFIG = OmegaConfig.register(ExplorersDelightConfig.class);
+        NPCS_ALIKE_LOOT_TABLES = List.of(
+                EntityType.VILLAGER.getLootTableId(),
+                EntityType.PILLAGER.getLootTableId(),
+                EntityType.ZOMBIE_VILLAGER.getLootTableId(),
+                EntityType.EVOKER.getLootTableId(),
+                EntityType.HOGLIN.getLootTableId(),
+                EntityType.ILLUSIONER.getLootTableId(),
+                EntityType.PLAYER.getLootTableId(),
+                EntityType.VINDICATOR.getLootTableId(),
+                EntityType.WANDERING_TRADER.getLootTableId(),
+                EntityType.WITCH.getLootTableId()
+        );
+    }
 
     @Override
     public void onInitialize() {
         // Mod systems
-//        ExplorersDelightConfig.load();
         CompatManager.init();
 
         // Blocks
@@ -102,12 +128,17 @@ public class ExplorersDelight implements ModInitializer {
         LUMINOUS_ORBS = TagFactory.ITEM.create(new Identifier("exdel:luminous_orbs"));
 
         // Block Tags
-        MYSTERY_ARROW_TRANSFORMABLE_BLOCKS = TagFactory.BLOCK.create(new Identifier("exdel:mystery_arrow/transformable_blocks"));
-        MYSTERY_ARROW_RESULT_BLOCKS = TagFactory.BLOCK.create(new Identifier("exdel:mystery_arrow/result_blocks"));
+        MYSTERY_ARROW_TRANSFORMABLE_BLOCKS = TagFactory.BLOCK.create(new Identifier("exdel:mystery_arrow/transformable"));
+        MYSTERY_ARROW_RESULT_BLOCKS = TagFactory.BLOCK.create(new Identifier("exdel:mystery_arrow/results"));
+
+        // Entity Tags
+        MYSTERY_ARROW_AGEABLE_ENTITIES = TagFactory.ENTITY_TYPE.create(new Identifier("exdel:mystery_arrow/ageable"));
 
         // Brewing recipes
         BrewingRecipeRegistryAccessor.getITEM_RECIPES().add(
                 new BrewingRecipeRegistry.Recipe<>(Items.POTION, Ingredient.ofItems(Items.ENDER_PEARL), RECALL_POTION));
+        BrewingRecipeRegistryAccessor.getITEM_RECIPES().add(
+                new BrewingRecipeRegistry.Recipe<>(Items.ARROW, Ingredient.ofItems(MYSTERY), MYSTERY_ARROW));
 
         // ScreenHandlers
         ASSORTMENT_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("exdel:assortment_pouch"), AssortmentPouchItem.AssortmentScreenHandler::new);
@@ -119,6 +150,17 @@ public class ExplorersDelight implements ModInitializer {
                 var arrowEntity = new MysteryArrowEntity(world, position.getX(), position.getY(), position.getZ());
                 arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
                 return arrowEntity;
+            }
+        });
+
+        LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, table, setter) -> {
+            if (NPCS_ALIKE_LOOT_TABLES.contains(id)) {
+                var poolBuilder = FabricLootPoolBuilder.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .bonusRolls(BinomialLootNumberProvider.create(50, 0.1F))
+                        .with(ItemEntry.builder(MYSTERY));
+
+                table.pool(poolBuilder);
             }
         });
     }

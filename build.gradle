@@ -65,9 +65,14 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// Hard dependencies
 	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
 	include "dev.emi:trinkets:${project.trinkets_version}"
 
+	modImplementation "com.github.Draylar:omega-config:${project.omega_version}"
+	include "com.github.Draylar:omega-config:${project.omega_version}"
+
+	// Soft (compatibility) dependencies
 	modCompileOnly "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
 	modRuntime "com.github.Draylar:get-off-my-lawn:${project.goml_version}"
 
@@ -78,7 +83,9 @@ dependencies {
 		transitive = false
 	}
 
+	// Other mods
 	modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	modRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
