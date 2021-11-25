@@ -22,11 +22,11 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
     }
 
     public MysteryArrowEntity(World world, LivingEntity owner) {
-        super(EntityType.SPECTRAL_ARROW, owner, world);
+        super(ExplorersDelight.MYSTERY_ARROW_TYPE, owner, world);
     }
 
     public MysteryArrowEntity(World world, double x, double y, double z) {
-        super(EntityType.SPECTRAL_ARROW, x, y, z, world);
+        super(ExplorersDelight.MYSTERY_ARROW_TYPE, x, y, z, world);
     }
 
     @Override
