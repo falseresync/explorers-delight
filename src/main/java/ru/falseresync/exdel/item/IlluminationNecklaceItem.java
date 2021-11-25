@@ -49,7 +49,9 @@ public class IlluminationNecklaceItem extends TrinketItem {
                 if (!orbs.isEmpty() && orbs.getItem() instanceof BlockItem orbBlockItem) {
                     var world = player.getServerWorld();
                     var pos = player.getBlockPos();
-                    if (world.getLightLevel(pos) < 8 && player.canPlaceOn(pos, player.getMovementDirection(), orbs)
+                    if (world.getLightLevel(pos) < 8
+                            && player.canPlaceOn(pos, player.getMovementDirection(), orbs)
+                            && world.getBlockState(pos).isAir()
                             && CompatManager.getInteractionPipeline().stream().allMatch(driver -> driver.canPlace(world, pos, player))) {
                         world.setBlockState(pos, orbBlockItem.getBlock().getDefaultState());
                         if (!player.getAbilities().creativeMode) {
