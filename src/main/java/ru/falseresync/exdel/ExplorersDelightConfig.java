@@ -19,5 +19,6 @@ public class ExplorersDelightConfig implements Config {
 
     public static class MysteryArrowConfig {
         public float agingChance = 1.0F;
+        public float transformationChance = 0.75F;
     }
 }

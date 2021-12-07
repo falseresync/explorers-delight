@@ -1,6 +1,19 @@
 {
   "replace": false,
   "values": [
-    "minecraft:grass_block"
+    "#minecraft:base_stone_nether",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:logs",
+    "#minecraft:wool",
+    "#minecraft:terracotta",
+    "#minecraft:stone_bricks",
+    "#minecraft:stairs",
+    "#minecraft:slabs",
+    "#minecraft:sand",
+    "#minecraft:soul_speed_blocks",
+    "#minecraft:mushroom_grow_block",
+    "#minecraft:leaves",
+    "#minecraft:impermeable",
+    "#minecraft:dirt"
   ]
 }

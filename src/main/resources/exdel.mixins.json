@@ -4,10 +4,7 @@
   "package": "ru.falseresync.exdel.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BrewingRecipeRegistryAccessor",
-    "BrewingRecipeRegistryMixin",
-    "BrewingStandBlockEntityMixin",
-    "BrewingStandScreenHandlerPotionSlotMixin"
+    "BrewingRecipeRegistryAccessor"
   ],
   "client": [
   ],

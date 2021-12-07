@@ -2,6 +2,8 @@ package ru.falseresync.exdel;
 
 import draylar.omegaconfig.OmegaConfig;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
@@ -56,6 +58,8 @@ public class ExplorersDelight implements ModInitializer {
     public static Tag<Block> MYSTERY_ARROW_TRANSFORMABLE_BLOCKS;
     public static Tag<Block> MYSTERY_ARROW_RESULT_BLOCKS;
     public static Tag<EntityType<?>> MYSTERY_ARROW_AGEABLE_ENTITIES;
+    public static Tag<EntityType<?>> MYSTERY_ARROW_TRANSFORMABLE_ENTITIES;
+    public static Tag<EntityType<?>> MYSTERY_ARROW_RESULT_ENTITIES;
     public static ScreenHandlerType<AssortmentPouchItem.AssortmentScreenHandler> ASSORTMENT_SCREEN_HANDLER;
 
     static {
@@ -133,12 +137,12 @@ public class ExplorersDelight implements ModInitializer {
 
         // Entity Tags
         MYSTERY_ARROW_AGEABLE_ENTITIES = TagFactory.ENTITY_TYPE.create(new Identifier("exdel:mystery_arrow/ageable"));
+        MYSTERY_ARROW_TRANSFORMABLE_ENTITIES = TagFactory.ENTITY_TYPE.create(new Identifier("exdel:mystery_arrow/transformable"));
+        MYSTERY_ARROW_RESULT_ENTITIES = TagFactory.ENTITY_TYPE.create(new Identifier("exdel:mystery_arrow/results"));
 
         // Brewing recipes
         BrewingRecipeRegistryAccessor.getITEM_RECIPES().add(
                 new BrewingRecipeRegistry.Recipe<>(Items.POTION, Ingredient.ofItems(Items.ENDER_PEARL), RECALL_POTION));
-        BrewingRecipeRegistryAccessor.getITEM_RECIPES().add(
-                new BrewingRecipeRegistry.Recipe<>(Items.ARROW, Ingredient.ofItems(MYSTERY), MYSTERY_ARROW));
 
         // ScreenHandlers
         ASSORTMENT_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("exdel:assortment_pouch"), AssortmentPouchItem.AssortmentScreenHandler::new);

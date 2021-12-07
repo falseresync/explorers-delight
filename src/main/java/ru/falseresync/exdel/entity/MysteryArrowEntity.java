@@ -2,6 +2,7 @@ package ru.falseresync.exdel.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -47,6 +48,18 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
                         ageable.setBaby(!ageable.isBaby());
                     } else if (innerTarget instanceof ZombieEntity ageable) {
                         ageable.setBaby(!ageable.isBaby());
+                    }
+                });
+            }
+        }
+
+        if (outerTarget.getType().isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_ENTITIES)) {
+            if (random.nextFloat() < 1){//ExplorersDelight.CONFIG.mysteryArrow.transformationChance) {
+                actions.add(innerTarget -> {
+                    if (world instanceof ServerWorld serverWorld) {
+                        ExplorersDelight.MYSTERY_ARROW_RESULT_ENTITIES.getRandom(random)
+                                .spawn(serverWorld, null, innerTarget.getName(), null, innerTarget.getBlockPos(), SpawnReason.CONVERSION, true, false);
+                        innerTarget.discard();
                     }
                 });
             }

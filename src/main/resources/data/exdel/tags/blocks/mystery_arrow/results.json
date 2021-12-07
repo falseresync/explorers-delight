@@ -1,7 +1,30 @@
 {
   "replace": false,
   "values": [
-    "minecraft:stone",
-    "minecraft:dirt"
+    "#minecraft:base_stone_nether",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:logs",
+    "#minecraft:wool",
+    "#minecraft:terracotta",
+    "#minecraft:stone_bricks",
+    "#minecraft:stairs",
+    "#minecraft:slabs",
+    "#minecraft:sand",
+    "#minecraft:soul_speed_blocks",
+    "#minecraft:mushroom_grow_block",
+    "#minecraft:leaves",
+    "#minecraft:impermeable",
+    "#minecraft:dirt",
+    "#minecraft:beacon_base_blocks",
+    "#minecraft:coal_ores",
+    "#minecraft:copper_ores",
+    "#minecraft:crystal_sound_blocks",
+    "#minecraft:diamond_ores",
+    "#minecraft:emerald_ores",
+    "#minecraft:gold_ores",
+    "#minecraft:gold_ores",
+    "#minecraft:iron_ores",
+    "#minecraft:lapis_ores",
+    "#minecraft:redstone_ores"
   ]
 }

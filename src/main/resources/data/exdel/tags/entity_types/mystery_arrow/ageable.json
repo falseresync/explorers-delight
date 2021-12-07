@@ -1,6 +1,17 @@
 {
   "replace": false,
   "values": [
-    "minecraft:villager"
+    "minecraft:villager",
+    "minecraft:zombie",
+    "minecraft:pig",
+    "minecraft:sheep",
+    "minecraft:cow",
+    "minecraft:chicken",
+    "minecraft:ocelot",
+    "minecraft:wolf",
+    "minecraft:llama",
+    "minecraft:horse",
+    "minecraft:hoglin",
+    "minecraft:piglin"
   ]
 }

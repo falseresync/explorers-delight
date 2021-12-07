@@ -47,7 +47,7 @@ public class IlluminationNecklaceItem extends TrinketItem {
                 }
 
                 if (!orbs.isEmpty() && orbs.getItem() instanceof BlockItem orbBlockItem) {
-                    var world = player.getServerWorld();
+                    var world = player.getWorld();
                     var pos = player.getBlockPos();
                     if (world.getLightLevel(pos) < 8
                             && player.canPlaceOn(pos, player.getMovementDirection(), orbs)
