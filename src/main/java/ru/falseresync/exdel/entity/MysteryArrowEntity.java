@@ -54,7 +54,7 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
         }
 
         if (outerTarget.getType().isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_ENTITIES)) {
-            if (random.nextFloat() < 1){//ExplorersDelight.CONFIG.mysteryArrow.transformationChance) {
+            if (random.nextFloat() < ExplorersDelight.CONFIG.mysteryArrow.transformationChance) {
                 actions.add(innerTarget -> {
                     if (world instanceof ServerWorld serverWorld) {
                         ExplorersDelight.MYSTERY_ARROW_RESULT_ENTITIES.getRandom(random)
