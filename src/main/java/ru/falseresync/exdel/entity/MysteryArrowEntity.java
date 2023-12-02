@@ -1,18 +1,19 @@
 package ru.falseresync.exdel.entity;
 
+import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.api.CompatManager;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -56,9 +57,20 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
         if (outerTarget.getType().isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_ENTITIES)) {
             if (random.nextFloat() < ExplorersDelight.CONFIG.mysteryArrow.transformationChance) {
                 actions.add(innerTarget -> {
-                    if (world instanceof ServerWorld serverWorld) {
-                        ExplorersDelight.MYSTERY_ARROW_RESULT_ENTITIES.getRandom(random)
-                                .spawn(serverWorld, null, innerTarget.getName(), null, innerTarget.getBlockPos(), SpawnReason.CONVERSION, true, false);
+                    if (getWorld() instanceof ServerWorld serverWorld) {
+                        var resultEntitiesRegistryEntries = serverWorld.getServer().getRegistryManager()
+                                .getOptional(RegistryKeys.ENTITY_TYPE)
+                                .map(registry -> registry.getOrCreateEntryList(ExplorersDelight.MYSTERY_ARROW_RESULT_ENTITIES));
+                        if (resultEntitiesRegistryEntries.isEmpty()) {
+                            return;
+                        }
+
+                        var randomEntityRegistryEntry = resultEntitiesRegistryEntries.get().getRandom(random);
+                        if (randomEntityRegistryEntry.isEmpty()) {
+                            return;
+                        }
+
+                        randomEntityRegistryEntry.get().value().spawn(serverWorld, innerTarget.getBlockPos(), SpawnReason.CONVERSION);
                         innerTarget.discard();
                     }
                 });
@@ -75,13 +87,24 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
         var pos = blockHitResult.getBlockPos();
-        var block = world.getBlockState(pos);
+        var block = getWorld().getBlockState(pos);
         if (block.isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_BLOCKS)
-                && getOwner() instanceof ServerPlayerEntity player
-                && !world.isClient
-                && CompatManager.getInteractionPipeline().stream().allMatch(driver -> driver.canPlace((ServerWorld) world, pos, player))) {
-            var newBlock = ExplorersDelight.MYSTERY_ARROW_RESULT_BLOCKS.getRandom(random);
-            world.setBlockState(pos, newBlock.getDefaultState());
+                && getOwner() instanceof PlayerEntity player
+                && getWorld() instanceof ServerWorld world
+                && CommonProtection.canPlaceBlock(world, pos, player.getGameProfile(), player)) {
+            var resultBlocksRegistryEntries = world.getServer().getRegistryManager()
+                    .getOptional(RegistryKeys.BLOCK)
+                    .map(registry -> registry.getOrCreateEntryList(ExplorersDelight.MYSTERY_ARROW_RESULT_BLOCKS));
+            if (resultBlocksRegistryEntries.isEmpty()) {
+                return;
+            }
+
+            var randomEntityRegistryEntry = resultBlocksRegistryEntries.get().getRandom(random);
+            if (randomEntityRegistryEntry.isEmpty()) {
+                return;
+            }
+
+            getWorld().setBlockState(pos, randomEntityRegistryEntry.get().value().getDefaultState());
             discard();
         }
     }

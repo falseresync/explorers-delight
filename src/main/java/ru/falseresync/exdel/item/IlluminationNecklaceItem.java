@@ -2,13 +2,13 @@ package ru.falseresync.exdel.item;
 
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
+import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.api.CompatManager;
 
 public class IlluminationNecklaceItem extends TrinketItem {
     public IlluminationNecklaceItem(Settings settings) {
@@ -25,8 +25,15 @@ public class IlluminationNecklaceItem extends TrinketItem {
     }
 
     @Override
+    public boolean canUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        return super.canUnequip(stack, slot, entity);
+    }
+
+    @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         super.tick(stack, slot, entity);
+        System.out.println(slot.inventory().getSlotType().getTranslation().toString());
+
         if (entity instanceof ServerPlayerEntity player) {
             var nbt = stack.getOrCreateSubNbt("exdel");
             var cooldown = nbt.getInt("Cooldown");
@@ -52,7 +59,7 @@ public class IlluminationNecklaceItem extends TrinketItem {
                     if (world.getLightLevel(pos) < 8
                             && player.canPlaceOn(pos, player.getMovementDirection(), orbs)
                             && world.getBlockState(pos).isAir()
-                            && CompatManager.getInteractionPipeline().stream().allMatch(driver -> driver.canPlace(world, pos, player))) {
+                            && CommonProtection.canPlaceBlock(world, pos, player.getGameProfile(), player)) {
                         world.setBlockState(pos, orbBlockItem.getBlock().getDefaultState());
                         if (!player.getAbilities().creativeMode) {
                             stack.damage(1, player, ignored -> {});

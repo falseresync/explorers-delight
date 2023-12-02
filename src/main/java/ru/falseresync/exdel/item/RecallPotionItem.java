@@ -50,7 +50,7 @@ public class RecallPotionItem extends Item {
                 player.getInventory().insertStack(new ItemStack(Items.GLASS_BOTTLE));
             }
 
-            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_CHIME, SoundCategory.PLAYERS, 1F, 1F);
+            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value(), SoundCategory.PLAYERS, 1F, 1F);
         }
         return stack;
     }

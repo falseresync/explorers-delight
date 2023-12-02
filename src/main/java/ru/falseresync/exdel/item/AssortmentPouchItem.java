@@ -1,11 +1,9 @@
 package ru.falseresync.exdel.item;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -41,7 +39,8 @@ public class AssortmentPouchItem extends Item {
         return TypedActionResult.success(stack);
     }
 
-    protected record AssortmentScreenHandlerFactory(Text displayName, Inventory inventory) implements NamedScreenHandlerFactory {
+    protected record AssortmentScreenHandlerFactory(Text displayName,
+                                                    Inventory inventory) implements NamedScreenHandlerFactory {
         @Override
         public Text getDisplayName() {
             return displayName;
@@ -93,13 +92,13 @@ public class AssortmentPouchItem extends Item {
         }
 
         @Override
-        public void close(PlayerEntity player) {
-            super.close(player);
+        public void onClosed(PlayerEntity player) {
+            super.onClosed(player);
             this.inventory.onClose(player);
         }
 
         @Override
-        public ItemStack transferSlot(PlayerEntity player, int index) {
+        public ItemStack quickMove(PlayerEntity player, int index) {
             var stack = ItemStack.EMPTY;
             var slot = slots.get(index);
             if (slot.hasStack()) {
@@ -131,7 +130,7 @@ public class AssortmentPouchItem extends Item {
                     index = endIndex - 1;
                 }
 
-                while(true) {
+                while (true) {
                     if (fromLast) {
                         if (index < startIndex) {
                             break;
@@ -184,26 +183,25 @@ public class AssortmentPouchItem extends Item {
 
         public AssortmentScreen(AssortmentScreenHandler handler, PlayerInventory inventory, Text title) {
             super(handler, inventory, title);
-            passEvents = false;
             backgroundHeight = 114 + 5 * 18;
             playerInventoryTitleY = backgroundHeight - 94;
         }
 
         @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            super.render(matrices, mouseX, mouseY, delta);
-            drawMouseoverTooltip(matrices, mouseX, mouseY);
+        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            super.render(context, mouseX, mouseY, delta);
+            drawMouseoverTooltip(context, mouseX, mouseY);
         }
 
         @Override
-        protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, TEXTURE);
+        protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+//            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+//            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.setShaderTexture(0, TEXTURE);
             int i = (width - backgroundWidth) / 2;
             int j = (height - backgroundHeight) / 2;
-            drawTexture(matrices, i, j, 0, 0, backgroundWidth, 5 * 18 + 17);
-            drawTexture(matrices, i, j + 5 * 18 + 17, 0, 126, backgroundWidth, 96);
+            context.drawTexture(TEXTURE, i, j, 0, 0, backgroundWidth, 5 * 18 + 17);
+            context.drawTexture(TEXTURE, i, j + 5 * 18 + 17, 0, 126, backgroundWidth, 96);
         }
     }
 

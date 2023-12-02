@@ -1,18 +1,16 @@
 package ru.falseresync.exdel;
 
-import draylar.omegaconfig.api.Config;
-import draylar.omegaconfig.api.Syncing;
 
-@Syncing
-public class ExplorersDelightConfig implements Config {
+//@Syncing
+public class ExplorersDelightConfig { // implements Config {
     public MysteryArrowConfig mysteryArrow = new MysteryArrowConfig();
 
-    @Override
+//    @Override
     public String getName() {
         return "exdel";
     }
 
-    @Override
+//    @Override
     public String getModid() {
         return "exdel";
     }

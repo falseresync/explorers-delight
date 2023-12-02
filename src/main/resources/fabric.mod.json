@@ -1,39 +1,43 @@
 {
-  "schemaVersion": 1,
-  "id": "exdel",
-  "version": "${version}",
+	"schemaVersion": 1,
+	"id": "exdel",
+	"version": "${version}",
 
-  "name": "Explorer's Delight",
-  "description": "A set of delightfully nifty tools for exploration",
-  "authors": [
-    "falseresync"
-  ],
-  "contact": {
-    "homepage": "https://falseresync.ru",
-    "sources": "https://github.com/falseresync/explorers-delight"
-  },
+	"name": "Explorer's Delight",
+	"description": "A set of delightfully nifty tools for exploration",
+	"authors": [
+		"falseresync"
+	],
+	"contact": {
+		"homepage": "https://dev.to/falseresync",
+		"sources": "https://github.com/falseresync/explorers-delight"
+	},
 
-  "license": "MIT",
-  "icon": "assets/exdel/textures/item/recall_potion.png",
+	"license": "MIT",
+	"icon": "assets/exdel/textures/item/recall_potion.png",
 
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "ru.falseresync.exdel.ExplorersDelight"
-    ],
-    "client": [
-      "ru.falseresync.exdel.ExplorersDelightClient"
-    ]
-  },
-  "mixins": [
-    "exdel.mixins.json"
-  ],
-  "accessWidener" : "exdel.accesswidener",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"ru.falseresync.exdel.ExplorersDelight"
+		],
+		"fabric-datagen": [
+            "dev.falseresync.exdel.ExplorersDelightDataGenerator"
+		],
+		"client": [
+			"ru.falseresync.exdel.ExplorersDelightClient"
+		]
+	},
+	"mixins": [
+		"exdel.mixins.json"
+	],
 
-  "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": "*",
-    "minecraft": "1.18.x",
-    "java": ">=17"
-  }
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.2",
+		"java": ">=17",
+		"fabric-api": "*",
+		"trinkets": ">=3.0.0",
+		"common-protection-api": "*"
+	}
 }
