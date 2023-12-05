@@ -33,6 +33,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import ru.falseresync.exdel.block.LuminousOrbBlock;
+import ru.falseresync.exdel.entity.MysteryArrowBehavior;
 import ru.falseresync.exdel.entity.MysteryArrowEntity;
 import ru.falseresync.exdel.item.AssortmentPouchItem;
 import ru.falseresync.exdel.item.IlluminationNecklaceItem;
@@ -62,8 +63,11 @@ public class ExplorersDelight implements ModInitializer {
     public static ScreenHandlerType<AssortmentPouchItem.AssortmentScreenHandler> ASSORTMENT_SCREEN_HANDLER;
 
     static {
-//        CONFIG = OmegaConfig.register(ExplorersDelightConfig.class);
-        CONFIG = new ExplorersDelightConfig();
+        if (!ExplorersDelightConfig.HANDLER.load()) {
+            ExplorersDelightConfig.HANDLER.save();
+        }
+        CONFIG = ExplorersDelightConfig.HANDLER.instance();
+
         NPCS_ALIKE_LOOT_TABLES = List.of(
                 EntityType.VILLAGER.getLootTableId(),
                 EntityType.PILLAGER.getLootTableId(),
@@ -169,6 +173,8 @@ public class ExplorersDelight implements ModInitializer {
         Registry.register(Registries.SCREEN_HANDLER, new Identifier("exdel:assortment_pouch"), ASSORTMENT_SCREEN_HANDLER);
 
         // Misc
+        MysteryArrowBehavior.registerAll();
+
         DispenserBlock.registerBehavior(MYSTERY_ARROW, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {

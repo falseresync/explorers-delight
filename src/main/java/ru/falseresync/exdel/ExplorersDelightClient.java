@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import ru.falseresync.exdel.client.render.MysteryArrowRenderer;

@@ -10,34 +10,29 @@ base {
 }
 
 repositories {
-    // Trinkets & REI
+    mavenCentral()
+    // Trinkets, ModMenu & REI dependencies
     maven { url = "https://maven.terraformersmc.com/" }
-    // Trinkets
+    // Trinkets dependencies
     maven { url = 'https://maven.ladysnake.org/releases' }
+    // YetAnotherConfigLib
+    maven { url = 'https://maven.isxander.dev/releases' }
+    // REI & it's slew of dependencies
+    maven { url = "https://maven.shedaniel.me/" }
     // Common Protection API
-    maven { url = "https://maven.nucleoid.xyz/" }
-    // Omega Config
-    maven { url = "https://maven.draylar.dev/releases" }
-    // Flan
     maven {
-        url = 'https://gitlab.com/api/v4/projects/21830712/packages/maven'
-        content { includeGroup "io.github.flemmli97" }
+        url = "https://maven.nucleoid.xyz/"
+        content { includeGroup "eu.pb4" }
     }
-    // GOML
+    // MixinTrace
     maven {
         url = "https://api.modrinth.com/maven"
         content { includeGroup "maven.modrinth" }
     }
-    maven {
-        url = "https://maven.jamieswhiteshirt.com/libs-release/"
-        content { includeGroup 'com.jamieswhiteshirt' }
-    }
-    // REI & it's slew of dependencies
-    maven { url = "https://maven.shedaniel.me/" }
-
 }
 
 loom {
+    accessWidenerPath = file("src/main/resources/exdel.accesswidener")
     runs {
         // This adds a new gradle task that runs the datagen API: "gradlew runDatagen"
         datagen {
@@ -45,7 +40,7 @@ loom {
             name "Data Generation"
             vmArg "-Dfabric-api.datagen"
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=explorers-delight"
+            vmArg "-Dfabric-api.datagen.modid=exdel"
 
             runDir "build/datagen"
         }
@@ -70,29 +65,24 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:0.15.0"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.1+1.20.2"
+    modImplementation 'dev.isxander.yacl:yet-another-config-lib-fabric:3.3.0-beta.1+1.20.2'
     modImplementation include("eu.pb4:common-protection-api:1.0.0")
-//    modImplementation include("dev.draylar.omega-config:omega-config-base:1.4.0+1.20.1")
 
+    // Trinkets
     // CCA changes their Maven regularly so the deps don't get properly pulled :p
     def cca_version = "5.3.0"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}"
     modImplementation "dev.emi:trinkets:3.8.0"
 
-    // Compatibility testing
-//    modRuntimeOnly("io.github.flemmli97:flan:1.20.1-1.8.10-fabric") {
-//        transitive = false // Remove this if you want to have all those optional dependencies
-//    }
-//    modRuntimeOnly "maven.modrinth:goml-reserved:1.10.2+1.20.2"
+    // Compat
+    def modmenu_version = '8.0.0'
+    modApi "com.terraformersmc:modmenu:${modmenu_version}"
+    modLocalRuntime "com.terraformersmc:modmenu:${modmenu_version}"
 
     // Convenience
-//    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:13.0.678"
-    modRuntimeOnly "com.terraformersmc:modmenu:8.0.0"
-    modRuntimeOnly "maven.modrinth:mixintrace:1.1.1+1.17"
-}
-
-loom {
-//    accessWidenerPath = file("src/main/resources/exdel.accesswidener")
+    modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:13.0.678"
+    modLocalRuntime "maven.modrinth:mixintrace:1.1.1+1.17"
 }
 
 processResources {

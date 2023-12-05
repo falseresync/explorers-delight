@@ -26,11 +26,15 @@
 		],
 		"client": [
 			"ru.falseresync.exdel.ExplorersDelightClient"
+		],
+		"modmenu": [
+			"dev.falseresync.exdel.ExplorersDelightModMenuCompat"
 		]
 	},
 	"mixins": [
 		"exdel.mixins.json"
 	],
+	"accessWidener": "exdel.accesswidener",
 
 	"depends": {
 		"fabricloader": ">=0.15.0",
