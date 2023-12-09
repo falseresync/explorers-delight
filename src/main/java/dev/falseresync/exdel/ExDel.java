@@ -1,9 +1,11 @@
 package dev.falseresync.exdel;
 
+import dev.falseresync.exdel.block.LuminousOrbBlock;
 import dev.falseresync.exdel.entity.MysteryArrowBehavior;
 import dev.falseresync.exdel.entity.MysteryArrowEntity;
-import dev.falseresync.exdel.entity.OwnedDispenser;
-import dev.falseresync.exdel.entity.OwnedProjectileDispenserBehavior;
+import dev.falseresync.exdel.api.Ownable;
+import dev.falseresync.exdel.api.OwnedProjectileDispenserBehavior;
+import dev.falseresync.exdel.item.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -14,7 +16,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -33,21 +34,15 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
-import dev.falseresync.exdel.block.LuminousOrbBlock;
-import dev.falseresync.exdel.item.AssortmentPouchItem;
-import dev.falseresync.exdel.item.IlluminationNecklaceItem;
-import dev.falseresync.exdel.item.MysteryArrowItem;
-import dev.falseresync.exdel.item.RecallPotionItem;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ExDel implements ModInitializer {
     public static final ExDelConfig CONFIG;
+    public static final BlockApiLookup<Ownable, Void> OWNABLE;
     private static final List<Identifier> NPCS_ALIKE_LOOT_TABLES;
     public static Block LUMINOUS_ORB;
     public static Item LUMINOUS_ORB_ITEM;
@@ -56,6 +51,7 @@ public class ExDel implements ModInitializer {
     public static Item ASSORTMENT_POUCH;
     public static Item MYSTERY;
     public static Item MYSTERY_ARROW;
+    public static Item OWNERIZER;
     public static EntityType<MysteryArrowEntity> MYSTERY_ARROW_TYPE;
     public static TagKey<Item> LUMINOUS_ORBS;
     public static TagKey<Block> MYSTERY_ARROW_TRANSFORMABLE_BLOCKS;
@@ -64,7 +60,6 @@ public class ExDel implements ModInitializer {
     public static TagKey<EntityType<?>> MYSTERY_ARROW_TRANSFORMABLE_ENTITIES;
     public static TagKey<EntityType<?>> MYSTERY_ARROW_RESULT_ENTITIES;
     public static ScreenHandlerType<AssortmentPouchItem.AssortmentScreenHandler> ASSORTMENT_SCREEN_HANDLER;
-    public static final BlockApiLookup<OwnedDispenser, OwnedDispenser.LookupContext> OWNED_DISPENSER;
 
     static {
         if (!ExDelConfig.HANDLER.load()) {
@@ -85,26 +80,9 @@ public class ExDel implements ModInitializer {
                 EntityType.WITCH.getLootTableId()
         );
 
-        OWNED_DISPENSER = BlockApiLookup.get(
-                new Identifier("exdel:owned_dispenser"),
-                OwnedDispenser.class,
-                OwnedDispenser.LookupContext.class
-        );
-
-        OWNED_DISPENSER.registerForBlockEntity((dispenser, context) -> {
-            if (dispenser.getWorld() instanceof ServerWorld world) {
-                var nbt = dispenser.createNbt();
-                if (!nbt.containsUuid("exdel:owner")) {
-                    return OwnedDispenser.unowned();
-                }
-
-                return Optional.ofNullable(world.getServer().getPlayerManager().getPlayer(nbt.getUuid("exdel:owner")))
-                        .map(OwnedDispenser::owned)
-                        .orElseGet(OwnedDispenser::unowned);
-            }
-
-            return OwnedDispenser.unowned();
-        }, BlockEntityType.DISPENSER);
+        OWNABLE = BlockApiLookup.get(new Identifier("exdel:ownable"), Ownable.class, Void.class);
+        OWNABLE.registerFallback((world, pos, state, blockEntity, _context) ->
+                blockEntity instanceof Ownable ownable && ownable.allowsLookup() ? ownable : null);
     }
 
     @Override
@@ -113,42 +91,39 @@ public class ExDel implements ModInitializer {
         LUMINOUS_ORB = Registry.register(
                 Registries.BLOCK,
                 new Identifier("exdel:luminous_orb"),
-                new LuminousOrbBlock(FabricBlockSettings.copyOf(Blocks.FIRE).collidable(false).luminance(15).breakInstantly().hardness(0.25F))
-        );
+                new LuminousOrbBlock(FabricBlockSettings.copyOf(Blocks.FIRE).collidable(false).luminance(15).breakInstantly().hardness(0.25F)));
 
         // BlockItems
         LUMINOUS_ORB_ITEM = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:luminous_orb"),
-                new BlockItem(LUMINOUS_ORB, new FabricItemSettings())
-        );
+                new BlockItem(LUMINOUS_ORB, new FabricItemSettings()));
 
         // Items
         ILLUMINATION_NECKLACE = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:illumination_necklace"),
-                new IlluminationNecklaceItem(new FabricItemSettings().maxDamage(576))
-        );
+                new IlluminationNecklaceItem(new FabricItemSettings().maxDamage(576)));
         RECALL_POTION = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:recall_potion"),
-                new RecallPotionItem(new FabricItemSettings())
-        );
+                new RecallPotionItem(new FabricItemSettings()));
         ASSORTMENT_POUCH = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:assortment_pouch"),
-                new AssortmentPouchItem(new FabricItemSettings().maxCount(1))
-        );
+                new AssortmentPouchItem(new FabricItemSettings().maxCount(1)));
         MYSTERY = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:mystery"),
-                new Item(new FabricItemSettings())
-        );
+                new Item(new FabricItemSettings()));
         MYSTERY_ARROW = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:mystery_arrow"),
-                new MysteryArrowItem(new FabricItemSettings())
-        );
+                new MysteryArrowItem(new FabricItemSettings()));
+        OWNERIZER = Registry.register(
+                Registries.ITEM,
+                new Identifier("exdel:ownerizer"),
+                new OwnerizerItem(new FabricItemSettings().maxCount(1)));
 
         // ItemGroups
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
@@ -171,8 +146,7 @@ public class ExDel implements ModInitializer {
                         .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                         .trackRangeBlocks(4)
                         .trackedUpdateRate(20)
-                        .build()
-        );
+                        .build());
 
         // Item Tags
         LUMINOUS_ORBS = TagKey.of(RegistryKeys.ITEM, new Identifier("exdel:luminous_orbs"));

@@ -5,6 +5,7 @@ import dev.emi.trinkets.api.TrinketItem;
 import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -35,12 +36,14 @@ public class IlluminationNecklaceItem extends TrinketItem {
     public void tick(ItemStack necklace, SlotReference slot, LivingEntity entity) {
         super.tick(necklace, slot, entity);
 
-        if (entity instanceof ServerPlayerEntity player) {
+        if (entity instanceof PlayerEntity player) {
             var nbt = necklace.getOrCreateSubNbt("exdel");
             var cooldown = nbt.getInt("cooldown");
             if (cooldown <= 0) {
                 cooldown = 5;
-                tryToCreateOrb(necklace, player);
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    tryToCreateOrb(necklace, serverPlayer);
+                }
             } else {
                 cooldown -= 1;
             }

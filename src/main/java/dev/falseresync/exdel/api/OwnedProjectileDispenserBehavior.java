@@ -1,4 +1,4 @@
-package dev.falseresync.exdel.entity;
+package dev.falseresync.exdel.api;
 
 import dev.falseresync.exdel.ExDel;
 import net.minecraft.block.DispenserBlock;
@@ -19,9 +19,16 @@ public abstract class OwnedProjectileDispenserBehavior extends ProjectileDispens
         projectileEntity.setVelocity(
                 direction.getOffsetX(), direction.getOffsetY() + 0.1F, direction.getOffsetZ(), getForce(), getVariation()
         );
-        Optional.ofNullable(ExDel.OWNED_DISPENSER
-                .find(world, pointer.pos(), pointer.state(), pointer.blockEntity(), OwnedDispenser.NO_CONTEXT)
-        ).ifPresent(dispenser -> dispenser.ifOwnedSetForProjectile(projectileEntity));
+        Optional.ofNullable(ExDel.OWNABLE.find(world, pointer.pos(), pointer.state(), pointer.blockEntity(), null))
+                .ifPresent(ownable -> {
+                    var ownerUuid = ownable.exdel$getOwnerUuid();
+                    if (ownerUuid != null) {
+                        var entity = world.getEntity(ownerUuid);
+                        if (entity != null) {
+                            projectileEntity.setOwner(entity);
+                        }
+                    }
+                });
 
         world.spawnEntity(projectileEntity);
         stack.decrement(1);

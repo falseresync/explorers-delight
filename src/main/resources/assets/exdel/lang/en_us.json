@@ -5,12 +5,16 @@
   "item.exdel.assortment_pouch": "Assortment pouch",
   "item.exdel.mystery": "Mystery",
   "item.exdel.mystery_arrow": "Mystery arrow",
+  "item.exdel.ownerizer": "Ownerizer",
   "entity.exdel.mystery_arrow": "Mystery arrow",
+  "message.exdel.ownerizer.success": "You now own this!",
+  "message.exdel.ownerizer.unownable": "This cannot be owned",
+  "message.exdel.ownerizer.already_owned": "Someone already owns this",
   "config.exdel.title": "Explorer's Delight configuration",
-  "config.exdel.category.general": "General",
-  "config.exdel.category.general.option_group.mystery_arrow": "Mystery arrow",
-  "config.exdel.category.general.option_group.mystery_arrow.description": "Configure the weight (i.e. relative chance) of each possible action, that a mystery arrow can do. IMPORTANT: To configure which entities Mystery arrows affect and which produce, you need to edit the corresponding tags.",
-  "config.exdel.category.general.option_group.mystery_arrow.option.aging_weight": "Aging weight",
-  "config.exdel.category.general.option_group.mystery_arrow.option.transformation_weight": "Transformation weight",
-  "config.exdel.category.general.option_group.mystery_arrow.option.do_nothing_weight": "Do nothing weight"
+  "config.exdel.general": "General",
+  "config.exdel.general.mystery_arrow": "Mystery arrow",
+  "config.exdel.general.mystery_arrow.description": "Configure the weight (i.e. relative chance) of each possible action, that a mystery arrow can do. IMPORTANT: To configure which entities Mystery arrows affect and which produce, you need to edit the corresponding tags.",
+  "config.exdel.general.mystery_arrow.aging_weight": "Aging weight",
+  "config.exdel.general.mystery_arrow.transformation_weight": "Transformation weight",
+  "config.exdel.general.mystery_arrow.do_nothing_weight": "Do nothing weight"
 }
