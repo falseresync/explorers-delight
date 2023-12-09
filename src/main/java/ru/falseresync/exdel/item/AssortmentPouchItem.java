@@ -39,8 +39,10 @@ public class AssortmentPouchItem extends Item {
         return TypedActionResult.success(stack);
     }
 
-    protected record AssortmentScreenHandlerFactory(Text displayName,
-                                                    Inventory inventory) implements NamedScreenHandlerFactory {
+    protected record AssortmentScreenHandlerFactory(
+            Text displayName,
+            Inventory inventory
+    ) implements NamedScreenHandlerFactory {
         @Override
         public Text getDisplayName() {
             return displayName;

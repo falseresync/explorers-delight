@@ -5,5 +5,12 @@
   "item.exdel.assortment_pouch": "Assortment pouch",
   "item.exdel.mystery": "Mystery",
   "item.exdel.mystery_arrow": "Mystery arrow",
-  "entity.exdel.mystery_arrow": "Mystery arrow"
+  "entity.exdel.mystery_arrow": "Mystery arrow",
+  "config.exdel.title": "Explorer's Delight configuration",
+  "config.exdel.category.general": "General",
+  "config.exdel.category.general.option_group.mystery_arrow": "Mystery arrow",
+  "config.exdel.category.general.option_group.mystery_arrow.description": "Configure the weight (i.e. relative chance) of each possible action, that a mystery arrow can do. IMPORTANT: To configure which entities Mystery arrows affect and which produce, you need to edit the corresponding tags.",
+  "config.exdel.category.general.option_group.mystery_arrow.option.aging_weight": "Aging weight",
+  "config.exdel.category.general.option_group.mystery_arrow.option.transformation_weight": "Transformation weight",
+  "config.exdel.category.general.option_group.mystery_arrow.option.do_nothing_weight": "Do nothing weight"
 }

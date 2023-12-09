@@ -3,13 +3,14 @@ package ru.falseresync.exdel;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -20,27 +21,30 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.BinomialLootNumberProvider;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import ru.falseresync.exdel.block.LuminousOrbBlock;
 import ru.falseresync.exdel.entity.MysteryArrowBehavior;
+import ru.falseresync.exdel.entity.OwnedDispenser;
 import ru.falseresync.exdel.entity.MysteryArrowEntity;
+import ru.falseresync.exdel.entity.OwnedProjectileDispenserBehavior;
 import ru.falseresync.exdel.item.AssortmentPouchItem;
 import ru.falseresync.exdel.item.IlluminationNecklaceItem;
 import ru.falseresync.exdel.item.MysteryArrowItem;
 import ru.falseresync.exdel.item.RecallPotionItem;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ExplorersDelight implements ModInitializer {
     public static final ExplorersDelightConfig CONFIG;
@@ -48,11 +52,10 @@ public class ExplorersDelight implements ModInitializer {
     public static Block LUMINOUS_ORB;
     public static Item LUMINOUS_ORB_ITEM;
     public static Item ILLUMINATION_NECKLACE;
-    public static Item RECALL_POTION_ITEM;
+    public static Item RECALL_POTION;
     public static Item ASSORTMENT_POUCH;
     public static Item MYSTERY;
     public static Item MYSTERY_ARROW;
-    public static Potion RECALL_POTION;
     public static EntityType<MysteryArrowEntity> MYSTERY_ARROW_TYPE;
     public static TagKey<Item> LUMINOUS_ORBS;
     public static TagKey<Block> MYSTERY_ARROW_TRANSFORMABLE_BLOCKS;
@@ -61,6 +64,7 @@ public class ExplorersDelight implements ModInitializer {
     public static TagKey<EntityType<?>> MYSTERY_ARROW_TRANSFORMABLE_ENTITIES;
     public static TagKey<EntityType<?>> MYSTERY_ARROW_RESULT_ENTITIES;
     public static ScreenHandlerType<AssortmentPouchItem.AssortmentScreenHandler> ASSORTMENT_SCREEN_HANDLER;
+    public static final BlockApiLookup<OwnedDispenser, OwnedDispenser.LookupContext> OWNED_DISPENSER;
 
     static {
         if (!ExplorersDelightConfig.HANDLER.load()) {
@@ -80,6 +84,27 @@ public class ExplorersDelight implements ModInitializer {
                 EntityType.WANDERING_TRADER.getLootTableId(),
                 EntityType.WITCH.getLootTableId()
         );
+
+        OWNED_DISPENSER = BlockApiLookup.get(
+                new Identifier("exdel:owned_dispenser"),
+                OwnedDispenser.class,
+                OwnedDispenser.LookupContext.class
+        );
+
+        OWNED_DISPENSER.registerForBlockEntity((dispenser, context) -> {
+            if (dispenser.getWorld() instanceof ServerWorld world) {
+                var nbt = dispenser.createNbt();
+                if (!nbt.containsUuid("exdel:owner")) {
+                    return OwnedDispenser.unowned();
+                }
+
+                return Optional.ofNullable(world.getServer().getPlayerManager().getPlayer(nbt.getUuid("exdel:owner")))
+                        .map(OwnedDispenser::owned)
+                        .orElseGet(OwnedDispenser::unowned);
+            }
+
+            return OwnedDispenser.unowned();
+        }, BlockEntityType.DISPENSER);
     }
 
     @Override
@@ -104,7 +129,7 @@ public class ExplorersDelight implements ModInitializer {
                 new Identifier("exdel:illumination_necklace"),
                 new IlluminationNecklaceItem(new FabricItemSettings().maxDamage(576))
         );
-        RECALL_POTION_ITEM = Registry.register(
+        RECALL_POTION = Registry.register(
                 Registries.ITEM,
                 new Identifier("exdel:recall_potion"),
                 new RecallPotionItem(new FabricItemSettings())
@@ -134,7 +159,7 @@ public class ExplorersDelight implements ModInitializer {
             entries.add(ILLUMINATION_NECKLACE);
             entries.add(ASSORTMENT_POUCH);
         });
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> entries.add(RECALL_POTION_ITEM));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> entries.add(RECALL_POTION));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> entries.add(MYSTERY_ARROW));
 
         // EntityTypes
@@ -146,7 +171,8 @@ public class ExplorersDelight implements ModInitializer {
                         .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                         .trackRangeBlocks(4)
                         .trackedUpdateRate(20)
-                        .build());
+                        .build()
+        );
 
         // Item Tags
         LUMINOUS_ORBS = TagKey.of(RegistryKeys.ITEM, new Identifier("exdel:luminous_orbs"));
@@ -160,13 +186,11 @@ public class ExplorersDelight implements ModInitializer {
         MYSTERY_ARROW_TRANSFORMABLE_ENTITIES = TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("exdel:mystery_arrow/transformable"));
         MYSTERY_ARROW_RESULT_ENTITIES = TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("exdel:mystery_arrow/results"));
 
-        // Potions
-        RECALL_POTION = Registry.register(Registries.POTION, new Identifier("exdel:recall_potion"), new Potion());
-
         // Brewing recipes
-        BrewingRecipeRegistry.registerPotionRecipe(Potions.THICK, Items.ENDER_PEARL, RECALL_POTION);
-//        BrewingRecipeRegistryAccessor.getITEM_RECIPES().add(
-//                new BrewingRecipeRegistry.Recipe<>(Items.POTION, Ingredient.ofItems(Items.ENDER_PEARL), RECALL_POTION));
+        // This is not possible because vanilla creates potion items for you:
+//        BrewingRecipeRegistry.registerPotionRecipe(Potions.THICK, Items.ENDER_PEARL, RECALL_POTION);
+        BrewingRecipeRegistry.ITEM_RECIPES.add(
+                new BrewingRecipeRegistry.Recipe<>(Items.POTION, Ingredient.ofItems(Items.ENDER_PEARL), RECALL_POTION));
 
         // ScreenHandlers
         ASSORTMENT_SCREEN_HANDLER = new ScreenHandlerType<>(AssortmentPouchItem.AssortmentScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
@@ -175,7 +199,7 @@ public class ExplorersDelight implements ModInitializer {
         // Misc
         MysteryArrowBehavior.registerAll();
 
-        DispenserBlock.registerBehavior(MYSTERY_ARROW, new ProjectileDispenserBehavior() {
+        DispenserBlock.registerBehavior(MYSTERY_ARROW, new OwnedProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 var arrowEntity = new MysteryArrowEntity(world, position.getX(), position.getY(), position.getZ());

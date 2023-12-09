@@ -23,8 +23,7 @@ public class ExplorersDelightConfig {
                     .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
                     .setJson5(true)
                     .build()
-            )
-            .build();
+            ).build();
 
     @SerialEntry
     public MysteryArrowConfig mysteryArrow = new MysteryArrowConfig();
@@ -32,45 +31,36 @@ public class ExplorersDelightConfig {
     @Environment(EnvType.CLIENT)
     public Screen createScreen(Screen parent) {
         return YetAnotherConfigLib.createBuilder()
-                .title(Text.literal("Used for narration. Could be used to render a title in the future."))
+                .title(Text.translatable("config.exdel.title"))
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.literal("Name of the category"))
-                        .tooltip(Text.literal("This text will appear as a tooltip when you hover or focus the button with Tab. There is no need to add \n to wrap as YACL will do it for you."))
+                        .name(Text.translatable("config.exdel.category.general"))
                         .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Name of the group"))
-                                .description(OptionDescription.of(Text.literal("This text will appear when you hover over the name or focus on the collapse button with Tab.")))
+                                .name(Text.translatable("config.exdel.category.general.option_group.mystery_arrow"))
+                                .description(OptionDescription.of(Text.translatable("config.exdel.category.general.option_group.mystery_arrow.description")))
                                 .option(Option.<Integer>createBuilder()
-                                        .name(Text.literal("Boolean Option"))
-                                        .description(OptionDescription.of(Text.literal("This text will appear as a tooltip when you hover over the option.")))
-                                        .binding(20, () -> this.mysteryArrow.agingWeight, newVal -> this.mysteryArrow.agingWeight = newVal)
+                                        .name(Text.translatable("config.exdel.category.general.option_group.mystery_arrow.option.aging_weight"))
+                                        .binding(22, () -> this.mysteryArrow.agingWeight, newVal -> this.mysteryArrow.agingWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
-                                )
-                                .option(Option.<Integer>createBuilder()
-                                        .name(Text.literal("Boolean Option"))
-                                        .description(OptionDescription.of(Text.literal("This text will appear as a tooltip when you hover over the option.")))
-                                        .binding(4, () -> this.mysteryArrow.transformationWeight, newVal -> this.mysteryArrow.transformationWeight = newVal)
+                                ).option(Option.<Integer>createBuilder()
+                                        .name(Text.translatable("config.exdel.category.general.option_group.mystery_arrow.option.transformation_weight"))
+                                        .binding(6, () -> this.mysteryArrow.transformationWeight, newVal -> this.mysteryArrow.transformationWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
-                                )
-                                .option(Option.<Integer>createBuilder()
-                                        .name(Text.literal("Boolean Option"))
-                                        .description(OptionDescription.of(Text.literal("This text will appear as a tooltip when you hover over the option.")))
+                                ).option(Option.<Integer>createBuilder()
+                                        .name(Text.translatable("config.exdel.category.general.option_group.mystery_arrow.option.do_nothing_weight"))
                                         .binding(4, () -> this.mysteryArrow.doNothingWeight, newVal -> this.mysteryArrow.doNothingWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
-                                )
-                                .build()
-                        )
-                        .build()
-                )
-                .build()
+                                ).build()
+                        ).build()
+                ).build()
                 .generateScreen(parent);
     }
 
     public static class MysteryArrowConfig {
-        public int agingWeight = 20;
-        public int transformationWeight = 4;
+        public int agingWeight = 22;
+        public int transformationWeight = 6;
         public int doNothingWeight = 4;
     }
 }
