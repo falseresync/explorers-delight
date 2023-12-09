@@ -1,4 +1,4 @@
-package ru.falseresync.exdel.block;
+package dev.falseresync.exdel.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

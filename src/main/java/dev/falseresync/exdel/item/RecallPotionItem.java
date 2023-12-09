@@ -1,4 +1,4 @@
-package ru.falseresync.exdel.item;
+package dev.falseresync.exdel.item;
 
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;

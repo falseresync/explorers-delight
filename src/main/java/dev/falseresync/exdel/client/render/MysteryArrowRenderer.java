@@ -1,9 +1,9 @@
-package ru.falseresync.exdel.client.render;
+package dev.falseresync.exdel.client.render;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
-import ru.falseresync.exdel.entity.MysteryArrowEntity;
+import dev.falseresync.exdel.entity.MysteryArrowEntity;
 
 public class MysteryArrowRenderer extends ProjectileEntityRenderer<MysteryArrowEntity> {
     public static final Identifier TEXTURE = new Identifier("exdel:textures/entity/mystery_arrow.png");

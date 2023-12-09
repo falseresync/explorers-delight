@@ -1,9 +1,8 @@
-package ru.falseresync.exdel;
+package dev.falseresync.exdel;
 
 import com.google.gson.GsonBuilder;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
-import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
@@ -14,9 +13,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class ExplorersDelightConfig {
-    public static ConfigClassHandler<ExplorersDelightConfig> HANDLER = ConfigClassHandler
-            .createBuilder(ExplorersDelightConfig.class)
+public class ExDelConfig {
+    public static ConfigClassHandler<ExDelConfig> HANDLER = ConfigClassHandler
+            .createBuilder(ExDelConfig.class)
             .id(new Identifier("exdel", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("exdel.json5"))

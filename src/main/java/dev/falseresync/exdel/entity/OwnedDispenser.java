@@ -1,4 +1,4 @@
-package ru.falseresync.exdel.entity;
+package dev.falseresync.exdel.entity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;

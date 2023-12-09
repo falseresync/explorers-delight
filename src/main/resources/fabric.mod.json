@@ -19,16 +19,16 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"ru.falseresync.exdel.ExplorersDelight"
+			"dev.falseresync.exdel.ExDel"
 		],
 		"fabric-datagen": [
-            "dev.falseresync.exdel.ExplorersDelightDataGenerator"
+			"dev.falseresync.exdel.datagen.ExDelDataGenerator"
 		],
 		"client": [
-			"ru.falseresync.exdel.ExplorersDelightClient"
+			"dev.falseresync.exdel.client.ExDelClient"
 		],
 		"modmenu": [
-			"dev.falseresync.exdel.ExplorersDelightModMenuCompat"
+			"dev.falseresync.exdel.client.ExDelModMenuCompat"
 		]
 	},
 	"mixins": [

@@ -1,4 +1,4 @@
-package ru.falseresync.exdel;
+package dev.falseresync.exdel;
 
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;

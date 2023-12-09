@@ -1,5 +1,7 @@
-package ru.falseresync.exdel.entity;
+package dev.falseresync.exdel.entity;
 
+import dev.falseresync.exdel.ExDel;
+import dev.falseresync.exdel.TagUtil;
 import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,8 +12,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.TagUtil;
 
 public class MysteryArrowEntity extends PersistentProjectileEntity {
     public MysteryArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -20,12 +20,12 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
     }
 
     public MysteryArrowEntity(World world, double x, double y, double z) {
-        super(ExplorersDelight.MYSTERY_ARROW_TYPE, x, y, z, world);
+        super(ExDel.MYSTERY_ARROW_TYPE, x, y, z, world);
         init();
     }
 
     public MysteryArrowEntity(World world, LivingEntity owner) {
-        super(ExplorersDelight.MYSTERY_ARROW_TYPE, owner, world);
+        super(ExDel.MYSTERY_ARROW_TYPE, owner, world);
         init();
     }
 
@@ -35,7 +35,7 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
 
     @Override
     protected ItemStack asItemStack() {
-        return new ItemStack(ExplorersDelight.MYSTERY_ARROW);
+        return new ItemStack(ExDel.MYSTERY_ARROW);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
         super.onBlockHit(blockHitResult);
         var pos = blockHitResult.getBlockPos();
         var block = getWorld().getBlockState(pos);
-        if (block.isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_BLOCKS)
+        if (block.isIn(ExDel.MYSTERY_ARROW_TRANSFORMABLE_BLOCKS)
                 && getWorld() instanceof ServerWorld world
                 && (
                 !CommonProtection.isProtected(world, pos)
@@ -91,7 +91,7 @@ public class MysteryArrowEntity extends PersistentProjectileEntity {
                 )
         )
         ) {
-            TagUtil.nextRandomEntry(world, ExplorersDelight.MYSTERY_ARROW_RESULT_BLOCKS, random)
+            TagUtil.nextRandomEntry(world, ExDel.MYSTERY_ARROW_RESULT_BLOCKS, random)
                     .ifPresent(randomTagEntry -> {
                         getWorld().setBlockState(pos, randomTagEntry.getDefaultState());
                         discard();

@@ -1,4 +1,4 @@
-package ru.falseresync.exdel.item;
+package dev.falseresync.exdel.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import ru.falseresync.exdel.ExplorersDelight;
+import dev.falseresync.exdel.ExDel;
 
 import java.util.Set;
 
@@ -62,7 +62,7 @@ public class AssortmentPouchItem extends Item {
         }
 
         public AssortmentScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-            super(ExplorersDelight.ASSORTMENT_SCREEN_HANDLER, syncId);
+            super(ExDel.ASSORTMENT_SCREEN_HANDLER, syncId);
             checkSize(inventory, INV_SIZE);
             this.inventory = inventory;
             inventory.onOpen(playerInventory.player);
@@ -280,7 +280,7 @@ public class AssortmentPouchItem extends Item {
 
         @Override
         public boolean isValid(int slot, ItemStack stack) {
-            return stacks.get(slot).isEmpty() && !stack.isOf(ExplorersDelight.ASSORTMENT_POUCH);
+            return stacks.get(slot).isEmpty() && !stack.isOf(ExDel.ASSORTMENT_POUCH);
         }
 
         @Override

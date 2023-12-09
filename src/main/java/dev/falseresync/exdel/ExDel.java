@@ -1,5 +1,9 @@
-package ru.falseresync.exdel;
+package dev.falseresync.exdel;
 
+import dev.falseresync.exdel.entity.MysteryArrowBehavior;
+import dev.falseresync.exdel.entity.MysteryArrowEntity;
+import dev.falseresync.exdel.entity.OwnedDispenser;
+import dev.falseresync.exdel.entity.OwnedProjectileDispenserBehavior;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -33,21 +37,17 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
-import ru.falseresync.exdel.block.LuminousOrbBlock;
-import ru.falseresync.exdel.entity.MysteryArrowBehavior;
-import ru.falseresync.exdel.entity.OwnedDispenser;
-import ru.falseresync.exdel.entity.MysteryArrowEntity;
-import ru.falseresync.exdel.entity.OwnedProjectileDispenserBehavior;
-import ru.falseresync.exdel.item.AssortmentPouchItem;
-import ru.falseresync.exdel.item.IlluminationNecklaceItem;
-import ru.falseresync.exdel.item.MysteryArrowItem;
-import ru.falseresync.exdel.item.RecallPotionItem;
+import dev.falseresync.exdel.block.LuminousOrbBlock;
+import dev.falseresync.exdel.item.AssortmentPouchItem;
+import dev.falseresync.exdel.item.IlluminationNecklaceItem;
+import dev.falseresync.exdel.item.MysteryArrowItem;
+import dev.falseresync.exdel.item.RecallPotionItem;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ExplorersDelight implements ModInitializer {
-    public static final ExplorersDelightConfig CONFIG;
+public class ExDel implements ModInitializer {
+    public static final ExDelConfig CONFIG;
     private static final List<Identifier> NPCS_ALIKE_LOOT_TABLES;
     public static Block LUMINOUS_ORB;
     public static Item LUMINOUS_ORB_ITEM;
@@ -67,10 +67,10 @@ public class ExplorersDelight implements ModInitializer {
     public static final BlockApiLookup<OwnedDispenser, OwnedDispenser.LookupContext> OWNED_DISPENSER;
 
     static {
-        if (!ExplorersDelightConfig.HANDLER.load()) {
-            ExplorersDelightConfig.HANDLER.save();
+        if (!ExDelConfig.HANDLER.load()) {
+            ExDelConfig.HANDLER.save();
         }
-        CONFIG = ExplorersDelightConfig.HANDLER.instance();
+        CONFIG = ExDelConfig.HANDLER.instance();
 
         NPCS_ALIKE_LOOT_TABLES = List.of(
                 EntityType.VILLAGER.getLootTableId(),

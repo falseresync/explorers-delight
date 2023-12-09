@@ -1,13 +1,12 @@
-package ru.falseresync.exdel.entity;
+package dev.falseresync.exdel.entity;
 
+import dev.falseresync.exdel.ExDel;
+import dev.falseresync.exdel.TagUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
-import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.TagUtil;
 
 import java.util.Collection;
 import java.util.NavigableMap;
@@ -20,9 +19,9 @@ public final class MysteryArrowBehavior {
 
     public static void registerAll() {
         registerEntityHitBehavior(
-                ExplorersDelight.CONFIG.mysteryArrow.agingWeight,
+                ExDel.CONFIG.mysteryArrow.agingWeight,
                 (arrow, world, target, random) -> {
-                    if (target.getType().isIn(ExplorersDelight.MYSTERY_ARROW_AGEABLE_ENTITIES)
+                    if (target.getType().isIn(ExDel.MYSTERY_ARROW_AGEABLE_ENTITIES)
                             && target instanceof MobEntity mob) {
                         mob.setBaby(!mob.isBaby());
                         return ActionResult.SUCCESS;
@@ -31,12 +30,12 @@ public final class MysteryArrowBehavior {
                 }
         );
         registerEntityHitBehavior(
-                ExplorersDelight.CONFIG.mysteryArrow.transformationWeight,
+                ExDel.CONFIG.mysteryArrow.transformationWeight,
                 (arrow, world, target, random) -> {
-                    if (!target.getType().isIn(ExplorersDelight.MYSTERY_ARROW_TRANSFORMABLE_ENTITIES)) {
+                    if (!target.getType().isIn(ExDel.MYSTERY_ARROW_TRANSFORMABLE_ENTITIES)) {
                         return ActionResult.FAILURE;
                     }
-                    var entry = TagUtil.nextRandomEntry(world, ExplorersDelight.MYSTERY_ARROW_RESULT_ENTITIES, random);
+                    var entry = TagUtil.nextRandomEntry(world, ExDel.MYSTERY_ARROW_RESULT_ENTITIES, random);
                     if (entry.isEmpty()) {
                         return ActionResult.FAILURE;
                     }
@@ -46,7 +45,7 @@ public final class MysteryArrowBehavior {
                 }
         );
         registerEntityHitBehavior(
-                ExplorersDelight.CONFIG.mysteryArrow.doNothingWeight,
+                ExDel.CONFIG.mysteryArrow.doNothingWeight,
                 (arrow, world, target, random) -> ActionResult.PASS
         );
     }

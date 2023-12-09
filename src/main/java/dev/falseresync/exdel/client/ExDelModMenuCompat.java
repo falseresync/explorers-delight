@@ -1,16 +1,15 @@
-package dev.falseresync.exdel;
+package dev.falseresync.exdel.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import dev.falseresync.exdel.ExDel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import ru.falseresync.exdel.ExplorersDelight;
-import ru.falseresync.exdel.ExplorersDelightConfig;
 
 @Environment(EnvType.CLIENT)
-public class ExplorersDelightModMenuCompat implements ModMenuApi {
+public class ExDelModMenuCompat implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return ExplorersDelight.CONFIG::createScreen;
+        return ExDel.CONFIG::createScreen;
     }
 }

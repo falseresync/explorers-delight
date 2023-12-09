@@ -1,4 +1,4 @@
-package ru.falseresync.exdel.item;
+package dev.falseresync.exdel.item;
 
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
-import ru.falseresync.exdel.ExplorersDelight;
+import dev.falseresync.exdel.ExDel;
 
 public class IlluminationNecklaceItem extends TrinketItem {
     public IlluminationNecklaceItem(Settings settings) {
@@ -54,7 +54,7 @@ public class IlluminationNecklaceItem extends TrinketItem {
         var orbs = ItemStack.EMPTY;
         for (var i = 0; i < inventory.size(); i++) {
             var inventoryStack = inventory.getStack(i);
-            if (inventoryStack.isIn(ExplorersDelight.LUMINOUS_ORBS)) {
+            if (inventoryStack.isIn(ExDel.LUMINOUS_ORBS)) {
                 orbs = inventoryStack;
                 break;
             }
@@ -63,7 +63,7 @@ public class IlluminationNecklaceItem extends TrinketItem {
         var world = player.getWorld();
         var pos = player.getBlockPos();
         if (orbs.isEmpty() && player.getAbilities().creativeMode) {
-            orbs = ExplorersDelight.LUMINOUS_ORB.asItem().getDefaultStack();
+            orbs = ExDel.LUMINOUS_ORB.asItem().getDefaultStack();
         }
 
         if (!orbs.isEmpty()
