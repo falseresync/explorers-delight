@@ -5,5 +5,17 @@
   "item.exdel.assortment_pouch": "Мешочек-ассорти",
   "item.exdel.mystery": "Тайна",
   "item.exdel.mystery_arrow": "Таинственная стрела",
-  "entity.exdel.mystery_arrow": "Таинственная стрела"
+  "item.exdel.ownerizer": "Овладеватель",
+  "entity.exdel.mystery_arrow": "Таинственная стрела",
+  "tooltip.exdel.ownerizer": "Используй меня, чтобы овладеть функциональным блоком \nи позволить кое-чему случаться автоматически! \nПОДСКАЗКА: Благодаря мне таинственные стрелы \nмогут работать в приватах GOML/Flan",
+  "message.exdel.ownerizer.success": "Теперь Вы владеете этим!",
+  "message.exdel.ownerizer.unownable": "Этим невозможно владеть",
+  "message.exdel.ownerizer.already_owned": "Кто-то уже владеет этим",
+  "config.exdel.title": "Настройки Explorer's Delight",
+  "config.exdel.general": "Общее",
+  "config.exdel.general.mystery_arrow": "Таинственная стрела",
+  "config.exdel.general.mystery_arrow.description": "Настройте вес (т.е. относительный шанс) каждого возможного действия таинственной стрелы. ВАЖНО: Чтобы настроить на каких сущностей таинственные стрелы влияют и каких производят, Вам нужно редактировать соответствующие тэги.",
+  "config.exdel.general.mystery_arrow.aging_weight": "Вес изменения возраста",
+  "config.exdel.general.mystery_arrow.transformation_weight": "Вес трансформации",
+  "config.exdel.general.mystery_arrow.do_nothing_weight": "Вес ничего-неделания"
 }

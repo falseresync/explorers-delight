@@ -7,5 +7,6 @@ public class ExDelDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         var pack = fabricDataGenerator.createPack();
+        pack.addProvider(ExDelRecipeProvider::new);
     }
 }

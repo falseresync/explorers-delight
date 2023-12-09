@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ExDelConfig {
-    public static ConfigClassHandler<ExDelConfig> HANDLER = ConfigClassHandler
+    public static final ConfigClassHandler<ExDelConfig> HANDLER = ConfigClassHandler
             .createBuilder(ExDelConfig.class)
             .id(new Identifier("exdel", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
@@ -38,17 +38,17 @@ public class ExDelConfig {
                                 .description(OptionDescription.of(Text.translatable("config.exdel.general.mystery_arrow.description")))
                                 .option(Option.<Integer>createBuilder()
                                         .name(Text.translatable("config.exdel.general.mystery_arrow.aging_weight"))
-                                        .binding(22, () -> this.mysteryArrow.agingWeight, newVal -> this.mysteryArrow.agingWeight = newVal)
+                                        .binding(HANDLER.defaults().mysteryArrow.agingWeight, () -> mysteryArrow.agingWeight, newVal -> mysteryArrow.agingWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
                                 ).option(Option.<Integer>createBuilder()
                                         .name(Text.translatable("config.exdel.general.mystery_arrow.transformation_weight"))
-                                        .binding(6, () -> this.mysteryArrow.transformationWeight, newVal -> this.mysteryArrow.transformationWeight = newVal)
+                                        .binding(HANDLER.defaults().mysteryArrow.transformationWeight, () -> mysteryArrow.transformationWeight, newVal -> mysteryArrow.transformationWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
                                 ).option(Option.<Integer>createBuilder()
                                         .name(Text.translatable("config.exdel.general.mystery_arrow.do_nothing_weight"))
-                                        .binding(4, () -> this.mysteryArrow.doNothingWeight, newVal -> this.mysteryArrow.doNothingWeight = newVal)
+                                        .binding(HANDLER.defaults().mysteryArrow.doNothingWeight, () -> mysteryArrow.doNothingWeight, newVal -> mysteryArrow.doNothingWeight = newVal)
                                         .controller(IntegerFieldControllerBuilder::create)
                                         .build()
                                 ).build()
@@ -58,8 +58,8 @@ public class ExDelConfig {
     }
 
     public static class MysteryArrowConfig {
-        public int agingWeight = 22;
-        public int transformationWeight = 6;
-        public int doNothingWeight = 4;
+        public int agingWeight = 30;
+        public int transformationWeight = 15;
+        public int doNothingWeight = 5;
     }
 }
