@@ -14,7 +14,7 @@
 	},
 
 	"license": "MIT",
-	"icon": "assets/exdel/textures/item/recall_potion.png",
+	"icon": "icon.png",
 
 	"environment": "*",
 	"entrypoints": {

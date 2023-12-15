@@ -8,6 +8,7 @@ import dev.falseresync.exdel.api.OwnedProjectileDispenserBehavior;
 import dev.falseresync.exdel.item.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
@@ -34,6 +35,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
@@ -52,6 +54,7 @@ public class ExDel implements ModInitializer {
     public static Item MYSTERY;
     public static Item MYSTERY_ARROW;
     public static Item OWNERIZER;
+    public static ItemGroup ITEM_GROUP;
     public static EntityType<MysteryArrowEntity> MYSTERY_ARROW_TYPE;
     public static TagKey<Item> LUMINOUS_ORBS;
     public static TagKey<Block> MYSTERY_ARROW_TRANSFORMABLE_BLOCKS;
@@ -125,17 +128,21 @@ public class ExDel implements ModInitializer {
                 new Identifier("exdel:ownerizer"),
                 new OwnerizerItem(new FabricItemSettings().maxCount(1)));
 
-        // ItemGroups
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
-            entries.add(LUMINOUS_ORB_ITEM);
-            entries.add(MYSTERY);
-        });
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
-            entries.add(ILLUMINATION_NECKLACE);
-            entries.add(ASSORTMENT_POUCH);
-        });
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> entries.add(RECALL_POTION));
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> entries.add(MYSTERY_ARROW));
+        // ItemGroup
+        ITEM_GROUP = FabricItemGroup.builder()
+                .displayName(Text.translatable("itemGroup.exdel"))
+                .icon(() -> RECALL_POTION.getDefaultStack())
+                .entries((displayContext, entries) -> {
+                    entries.add(ILLUMINATION_NECKLACE);
+                    entries.add(LUMINOUS_ORB_ITEM);
+                    entries.add(MYSTERY);
+                    entries.add(MYSTERY_ARROW);
+                    entries.add(OWNERIZER);
+                    entries.add(ASSORTMENT_POUCH);
+                    entries.add(RECALL_POTION);
+                })
+                .build();
+        Registry.register(Registries.ITEM_GROUP, new Identifier("exdel:item_group"), ITEM_GROUP);
 
         // EntityTypes
         MYSTERY_ARROW_TYPE = Registry.register(

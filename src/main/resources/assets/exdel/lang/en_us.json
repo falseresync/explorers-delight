@@ -6,6 +6,7 @@
   "item.exdel.mystery": "Mystery",
   "item.exdel.mystery_arrow": "Mystery arrow",
   "item.exdel.ownerizer": "Ownerizer",
+  "itemGroup.exdel": "Explorer's Delight",
   "entity.exdel.mystery_arrow": "Mystery arrow",
   "tooltip.exdel.ownerizer": "Use me to own a functional block \nand allow some stuff to happen automatically! \nHINT: I allow mystery arrows \nto work with dispensers in GOML/Flan claims",
   "message.exdel.ownerizer.success": "You now own this!",
