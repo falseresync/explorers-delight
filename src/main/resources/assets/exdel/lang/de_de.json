@@ -1,0 +1,22 @@
+{
+  "block.exdel.luminous_orb": "Beleuchtende Kugel",
+  "item.exdel.illumination_necklace": "Beleuchtungskette",
+  "item.exdel.recall_potion": "Rückruftrank",
+  "item.exdel.assortment_pouch": "Assortiment-Beutel",
+  "item.exdel.mystery": "Geheimnis",
+  "item.exdel.mystery_arrow": "Geheimnispfeil",
+  "item.exdel.ownerizer": "Besitzerer",
+  "itemGroup.exdel": "Explorer's Delight",
+  "entity.exdel.mystery_arrow": "Geheimnispfeil",
+  "tooltip.exdel.ownerizer": "Benutz, um einen funktionalen Block zu besitzen, \nsodass 'was automatisch passiert! \nTIPP: Ich erlaube, Geheimnispfeile in den Werfern \nin GOML/Flan Gründstücken zu arbeiten",
+  "message.exdel.ownerizer.success": "Du besitzest es nun!",
+  "message.exdel.ownerizer.unownable": "Es kann nicht besitzt werden",
+  "message.exdel.ownerizer.already_owned": "Jemand besitzt es schon",
+  "config.exdel.title": "Explorer's Delight Einstellungen",
+  "config.exdel.general": "Allgemein",
+  "config.exdel.general.mystery_arrow": "Geheimnispfeil",
+  "config.exdel.general.mystery_arrow.description": "Stell das Gewicht (d.h. relative Chance) von jeder möglichen Effekt vom Geheimnispfeil ein. WICHTIG: Um es einzustellen, welche Kreaturen Geheimnispfeile beeinflussen und welche produzieren, brauchst du die jeweiligen Tags bearbeiten.",
+  "config.exdel.general.mystery_arrow.aging_weight": "Gewicht von Altern",
+  "config.exdel.general.mystery_arrow.transformation_weight": "Gewicht von Verwandlung",
+  "config.exdel.general.mystery_arrow.do_nothing_weight": "Gewicht von Nichts-Tun"
+}

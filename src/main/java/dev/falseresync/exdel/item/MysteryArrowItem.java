@@ -14,6 +14,6 @@ public class MysteryArrowItem extends ArrowItem {
 
     @Override
     public PersistentProjectileEntity createArrow(World world, ItemStack stack, LivingEntity shooter) {
-        return new MysteryArrowEntity(world, shooter);
+        return new MysteryArrowEntity(world, shooter, stack.copyWithCount(1));
     }
 }

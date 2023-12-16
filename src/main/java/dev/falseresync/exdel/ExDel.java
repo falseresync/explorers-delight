@@ -183,7 +183,7 @@ public class ExDel implements ModInitializer {
         DispenserBlock.registerBehavior(MYSTERY_ARROW, new OwnedProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                var arrowEntity = new MysteryArrowEntity(world, position.getX(), position.getY(), position.getZ());
+                var arrowEntity = new MysteryArrowEntity(world, position.getX(), position.getY(), position.getZ(), stack.copyWithCount(1));
                 arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
                 return arrowEntity;
             }

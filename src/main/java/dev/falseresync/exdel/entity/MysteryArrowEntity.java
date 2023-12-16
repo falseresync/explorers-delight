@@ -14,28 +14,29 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 public class MysteryArrowEntity extends PersistentProjectileEntity {
+    protected static final ItemStack DEFAULT_STACK;
+
+    static {
+        DEFAULT_STACK = new ItemStack(ExDel.MYSTERY_ARROW);
+    }
+
     public MysteryArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, DEFAULT_STACK);
         init();
     }
 
-    public MysteryArrowEntity(World world, double x, double y, double z) {
-        super(ExDel.MYSTERY_ARROW_TYPE, x, y, z, world);
+    public MysteryArrowEntity(World world, double x, double y, double z, ItemStack stack) {
+        super(ExDel.MYSTERY_ARROW_TYPE, x, y, z, world, stack);
         init();
     }
 
-    public MysteryArrowEntity(World world, LivingEntity owner) {
-        super(ExDel.MYSTERY_ARROW_TYPE, owner, world);
+    public MysteryArrowEntity(World world, LivingEntity owner, ItemStack stack) {
+        super(ExDel.MYSTERY_ARROW_TYPE, owner, world, stack);
         init();
     }
 
     protected void init() {
         setDamage(0);
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return new ItemStack(ExDel.MYSTERY_ARROW);
     }
 
     @Override

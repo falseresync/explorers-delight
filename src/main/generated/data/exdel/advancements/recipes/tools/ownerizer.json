@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mystery": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exdel:mystery"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "exdel:ownerizer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mystery"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "exdel:ownerizer"
+    ]
+  },
+  "sends_telemetry_event": false
+}

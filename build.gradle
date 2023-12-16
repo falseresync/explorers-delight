@@ -2,7 +2,7 @@ plugins {
     id 'fabric-loom' version '1.4-SNAPSHOT'
 }
 
-version = "1.0.0-beta.4+1.20.2"
+version = "1.0.0-beta.5+1.20.4"
 group = "dev.falseresync"
 
 base {
@@ -60,12 +60,12 @@ sourceSets {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:1.20.2"
-    mappings "net.fabricmc:yarn:1.20.2+build.4:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.15.0"
+    minecraft "com.mojang:minecraft:1.20.4"
+    mappings "net.fabricmc:yarn:1.20.4+build.3:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.15.2"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.1+1.20.2"
-    modImplementation 'dev.isxander.yacl:yet-another-config-lib-fabric:3.3.0-beta.1+1.20.2'
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.3+1.20.4"
+    modImplementation 'dev.isxander.yacl:yet-another-config-lib-fabric:3.3.1+1.20.4'
     modImplementation include("eu.pb4:common-protection-api:1.0.0")
 
     // Trinkets
@@ -76,13 +76,14 @@ dependencies {
     modImplementation "dev.emi:trinkets:3.8.0"
 
     // Compat
-    def modmenu_version = '8.0.0'
+    def modmenu_version = '9.0.0-pre.1'
     modApi "com.terraformersmc:modmenu:${modmenu_version}"
     modLocalRuntime "com.terraformersmc:modmenu:${modmenu_version}"
 
     // Convenience
-    modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:13.0.678"
+    modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:14.0.680"
     modLocalRuntime "maven.modrinth:mixintrace:1.1.1+1.17"
+//    modLocalRuntime "maven.modrinth:goml-reserved:`1.11.0`+1.20.3-rc1"
 }
 
 processResources {
